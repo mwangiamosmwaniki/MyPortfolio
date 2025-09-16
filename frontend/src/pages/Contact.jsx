@@ -10,7 +10,6 @@ import {
   Send,
   Github,
   Linkedin,
-  Twitter,
   Facebook,
 } from "lucide-react";
 
@@ -22,8 +21,11 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [status, setStatus] = useState({ type: "", message: "" });
+
+  // Use environment variable for backend URL
+  // eslint-disable-next-line no-undef
+  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ export default function Contact() {
     setStatus({ type: "loading" });
 
     try {
-      const res = await fetch("http://localhost:5000/contact", {
+      const res = await fetch(`${apiUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -77,6 +79,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
+        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -152,6 +155,7 @@ export default function Contact() {
                 <a
                   href="https://github.com/mwangiamosmwaniki"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-slate-800 border border-purple-500/30 rounded-lg flex items-center justify-center text-gray-400 hover:text-purple-400 hover:border-purple-400/50 transition-all duration-200"
                 >
                   <Github className="w-5 h-5" />
@@ -159,6 +163,7 @@ export default function Contact() {
                 <a
                   href="https://www.linkedin.com/in/amos-mwangi-108575382"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-slate-800 border border-purple-500/30 rounded-lg flex items-center justify-center text-gray-400 hover:text-purple-400 hover:border-purple-400/50 transition-all duration-200"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -166,6 +171,7 @@ export default function Contact() {
                 <a
                   href="https://www.facebook.com/Amoh15"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-slate-800 border border-purple-500/30 rounded-lg flex items-center justify-center text-gray-400 hover:text-purple-400 hover:border-purple-400/50 transition-all duration-200"
                 >
                   <Facebook className="w-5 h-5" />
