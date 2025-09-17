@@ -24,7 +24,7 @@ export default function Contact() {
   const [status, setStatus] = useState({ type: "", message: "" });
 
   // Use environment variable for backend URL
-  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
