@@ -38,7 +38,7 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-500 to-slate-900">
       <style>{`
         :root {
           --primary: 168 85% 55%;
@@ -152,7 +152,7 @@ export default function Layout({ children }) {
               />
               <p className="text-gray-400 max-w-sm">
                 Crafting sleek, modern, and functional digital experiences with
-                passion 🚀
+                passion
               </p>
             </div>
 

@@ -131,7 +131,7 @@ export default function About() {
                       <div className="flex flex-wrap items-center gap-2 mb-2">
                         <Badge
                           variant="outline"
-                          className="text-purple-300 border-purple-500/30"
+                          className="text-blue-300 border-purple-500/30"
                         >
                           {exp.year}
                         </Badge>
