@@ -4,7 +4,6 @@ import { createPageUrl } from "./utils";
 import {
   Menu,
   X,
-  Code,
   Home,
   User,
   Briefcase,
@@ -12,6 +11,9 @@ import {
   Facebook,
   Github,
   Linkedin,
+  ChevronUp,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./components/ui/button";
@@ -28,38 +30,59 @@ export default function Layout({ children }) {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+  // Dark is the default — only switch to light if user explicitly saved "light"
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const stored = localStorage.getItem("theme");
+    return stored !== "light"; // anything other than explicit "light" → dark
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark((prev) => !prev);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setShowScrollToTop(window.scrollY > 400);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-500 to-slate-900">
-      <style>{`
-        :root {
-          --primary: 168 85% 55%;
-          --primary-foreground: 0 0% 98%;
-          --background: 222.2 84% 4.9%;
-          --foreground: 210 40% 98%;
-        }
-      `}</style>
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  return (
+    <div className="min-h-screen transition-colors duration-300 bg-white dark:bg-neutral-950">
       {/* Navigation */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-slate-900/95 backdrop-blur-md border-b border-purple-500/20"
+            ? "bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800"
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
+            {/* Logo */}
             <Link
               to={createPageUrl("Portfolio")}
               className="flex items-center gap-3"
@@ -67,41 +90,74 @@ export default function Layout({ children }) {
               <img
                 src={Logo}
                 alt="DevPortfolio Logo"
-                className="h-10 w-auto object-contain"
+                className="object-contain w-auto h-10"
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            {/* Desktop Nav + Theme Toggle */}
+            <div className="items-center hidden gap-6 md:flex">
               {navigationItems.map((item) => (
                 <Link
                   key={item.title}
                   to={item.url}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
                     location.pathname === item.url
-                      ? "bg-purple-500/20 text-purple-300"
-                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                      ? "bg-neutral-900 dark:bg-white/10 text-white dark:text-white"
+                      : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5"
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
                   {item.title}
                 </Link>
               ))}
+
+              {/* Theme toggle pill — desktop */}
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="relative transition-colors duration-300 border rounded-full w-14 h-7 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 bg-neutral-200 border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
+              >
+                <Sun className="absolute left-1.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-amber-500 transition-opacity duration-300 dark:opacity-30 opacity-100" />
+                <Moon className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-400 transition-opacity duration-300 dark:opacity-100 opacity-30" />
+                <motion.span
+                  layout
+                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  className={`absolute top-0.5 w-6 h-6 rounded-full shadow-md transition-colors duration-300 ${
+                    isDark
+                      ? "left-[calc(100%-1.625rem)] bg-orange-500"
+                      : "left-0.5 bg-white"
+                  }`}
+                />
+              </button>
             </div>
 
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden text-white"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </Button>
+            {/* Mobile: theme icon + hamburger */}
+            <div className="flex items-center gap-3 md:hidden">
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="p-2 transition-colors duration-200 border rounded-lg bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
+              >
+                {isDark ? (
+                  <Sun className="w-4 h-4 text-amber-400" />
+                ) : (
+                  <Moon className="w-4 h-4 text-orange-500" />
+                )}
+              </button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-neutral-700 dark:text-white"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -112,17 +168,17 @@ export default function Layout({ children }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-slate-900/95 backdrop-blur-md border-t border-purple-500/20"
+              className="border-t md:hidden bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-neutral-200 dark:border-neutral-800"
             >
-              <div className="px-4 py-4 space-y-2">
+              <div className="px-4 py-4 space-y-1">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.title}
                     to={item.url}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-sm font-medium ${
                       location.pathname === item.url
-                        ? "bg-purple-500/20 text-purple-300"
-                        : "text-gray-300 hover:text-white hover:bg-white/10"
+                        ? "bg-neutral-900 dark:bg-white/10 text-white dark:text-white"
+                        : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5"
                     }`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -139,76 +195,97 @@ export default function Layout({ children }) {
       {/* Main Content */}
       <main className="pt-20">{children}</main>
 
+      {/* Scroll to Top */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: showScrollToTop ? 1 : 0,
+          scale: showScrollToTop ? 1 : 0,
+        }}
+        onClick={scrollToTop}
+        className="fixed z-40 p-3 text-white transition-all duration-200 rounded-full shadow-lg bottom-6 right-6 bg-neutral-900 dark:bg-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 hover:scale-110"
+        disabled={!showScrollToTop}
+      >
+        <ChevronUp className="w-6 h-6" />
+      </motion.button>
+
       {/* Footer */}
-      <footer className="bg-slate-900/90 border-t border-purple-500/20 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            {/* Logo + Tagline */}
-            <div className="flex flex-col items-center md:items-start gap-4">
+      <footer className="mt-20 transition-colors duration-300 border-t bg-neutral-100 dark:bg-neutral-900/90 border-neutral-200 dark:border-neutral-800">
+        <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3 md:text-left">
+            
+            <div className="flex flex-col items-center gap-4 md:items-start">
               <img
                 src={Logo}
                 alt="Logo"
-                className="w-20 h-14 rounded-lg shadow-lg"
+                className="h-12 rounded-lg shadow-lg w-22"
               />
-              <p className="text-gray-400 max-w-sm">
+              <p className="max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
                 Crafting sleek, modern, and functional digital experiences with
                 passion
               </p>
             </div>
 
             {/* Quick Links */}
-            <div className="flex flex-col items-center md:items-start gap-3">
-              <h3 className="text-white font-semibold text-lg">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
+            <div className="flex flex-col items-center gap-3 md:items-start">
+              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                Quick Links
+              </h3>
+              <ul className="space-y-2 text-sm text-neutral-500 dark:text-neutral-400">
                 <li>
-                  <a
-                    href="/about"
-                    className="hover:text-purple-400 transition-colors"
+                  <Link
+                    to={createPageUrl("About")}
+                    className="transition-colors hover:text-orange-500 dark:hover:text-orange-400"
                   >
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/projects"
-                    className="hover:text-purple-400 transition-colors"
+                  <Link
+                    to={createPageUrl("Projects")}
+                    className="transition-colors hover:text-orange-500 dark:hover:text-orange-400"
                   >
                     Projects
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/contact"
-                    className="hover:text-purple-400 transition-colors"
+                  <Link
+                    to={createPageUrl("Contact")}
+                    className="transition-colors hover:text-orange-500 dark:hover:text-orange-400"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
 
             {/* Social Links */}
-            <div className="flex flex-col items-center md:items-start gap-3">
-              <h3 className="text-white font-semibold text-lg">Connect</h3>
+            <div className="flex flex-col items-center gap-3 md:items-start">
+              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                Connect
+              </h3>
               <div className="flex gap-5">
                 <a
                   href="https://github.com/mwangiamosmwaniki"
                   target="_blank"
-                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  rel="noopener noreferrer"
+                  className="transition-colors text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
                 >
                   <Github className="w-5 h-5" />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/amos-mwangi-108575382"
                   target="_blank"
-                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  rel="noopener noreferrer"
+                  className="transition-colors text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <a
                   href="https://www.facebook.com/Amoh15"
                   target="_blank"
-                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  rel="noopener noreferrer"
+                  className="transition-colors text-neutral-500 dark:text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400"
                 >
                   <Facebook className="w-5 h-5" />
                 </a>
@@ -217,10 +294,16 @@ export default function Layout({ children }) {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-purple-500/70 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-gray-500 text-sm">
-            <span>© 2025 All rights reserved</span>
-            <span className="font-medium text-gray-300 mt-2 sm:mt-0">
-              Made with ❤️ by <span className="text-purple-400">DevAmos</span>
+          <div className="flex flex-col items-center justify-between pt-6 mt-10 text-sm border-t border-neutral-200 dark:border-neutral-700 sm:flex-row">
+            <span className="text-neutral-500 dark:text-neutral-400">
+              © {new Date().getFullYear()} All rights reserved.
+            </span>
+
+            <span className="mt-2 text-neutral-600 dark:text-neutral-400 sm:mt-0">
+              Crafted and maintained by{" "}
+              <span className="font-semibold tracking-wide text-orange-500 dark:text-orange-400">
+                DevAmos
+              </span>
             </span>
           </div>
         </div>

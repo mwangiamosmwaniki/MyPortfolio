@@ -17,13 +17,19 @@ const skillCategories = [
   {
     title: "Frontend",
     icon: Code,
-    color: "from-blue-500 to-cyan-500",
+    accent: "from-sky-500 to-blue-600",
+    glow: "group-hover:shadow-sky-500/20",
+    badge:
+      "bg-sky-500/10 text-sky-300 border-sky-500/20 group-hover:border-sky-400/40",
     skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   {
     title: "Backend",
     icon: Database,
-    color: "from-green-500 to-emerald-500",
+    accent: "from-emerald-500 to-teal-600",
+    glow: "group-hover:shadow-emerald-500/20",
+    badge:
+      "bg-emerald-500/10 text-emerald-300 border-emerald-500/20 group-hover:border-emerald-400/40",
     skills: [
       "Node.js",
       "Python",
@@ -36,7 +42,10 @@ const skillCategories = [
   {
     title: "Design",
     icon: Palette,
-    color: "from-purple-500 to-pink-500",
+    accent: "from-pink-500 to-rose-600",
+    glow: "group-hover:shadow-pink-500/20",
+    badge:
+      "bg-pink-500/10 text-pink-300 border-pink-500/20 group-hover:border-pink-400/40",
     skills: [
       "Figma",
       "Adobe XD",
@@ -49,7 +58,10 @@ const skillCategories = [
   {
     title: "Mobile",
     icon: Smartphone,
-    color: "from-orange-500 to-red-500",
+    accent: "from-orange-500 to-orange-600",
+    glow: "group-hover:shadow-orange-500/20",
+    badge:
+      "bg-orange-500/10 text-orange-300 border-orange-500/20 group-hover:border-orange-400/40",
     skills: [
       "React Native",
       "Flutter",
@@ -62,7 +74,10 @@ const skillCategories = [
   {
     title: "DevOps",
     icon: Globe,
-    color: "from-indigo-500 to-purple-500",
+    accent: "from-amber-500 to-orange-600",
+    glow: "group-hover:shadow-amber-500/20",
+    badge:
+      "bg-amber-500/10 text-amber-300 border-amber-500/20 group-hover:border-amber-400/40",
     skills: [
       "AWS",
       "Docker",
@@ -75,109 +90,140 @@ const skillCategories = [
   {
     title: "Tools",
     icon: Zap,
-    color: "from-yellow-500 to-orange-500",
+    accent: "from-orange-500 to-orange-600",
+    glow: "group-hover:shadow-orange-500/20",
+    badge:
+      "bg-orange-500/10 text-orange-300 border-orange-500/20 group-hover:border-orange-400/40",
     skills: ["Git", "VS Code", "Postman", "Notion", "Linear", "Slack"],
   },
 ];
 
+const stats = [
+  { number: "10+", label: "Projects Completed", icon: CheckCircle },
+  { number: "2+", label: "Years Experience", icon: Briefcase },
+  { number: "10+", label: "Happy Clients", icon: Users },
+  { number: "100%", label: "Satisfaction Rate", icon: Smile },
+];
+
 export default function Skills() {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative px-4 py-24 overflow-hidden sm:px-6 lg:px-8 bg-neutral-950">
+      {/* Background grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-orange-600/5 blur-[120px]" />
+
+      <div className="relative mx-auto max-w-7xl">
+        {/* ── Header ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-20 text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Skills & Expertise
+          <span className="inline-block mb-4 text-xs font-semibold tracking-[0.2em] uppercase text-orange-400 border border-orange-500/30 rounded-full px-4 py-1.5 bg-orange-500/10">
+            Expertise
+          </span>
+          <h2
+            className="mb-5 text-5xl font-black leading-none tracking-tight text-white md:text-6xl"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            Skills &{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-500">
+              Toolbox
+            </span>
           </h2>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-            I work with a diverse set of technologies to build exceptional
-            digital experiences. Here's a breakdown of my technical skills and
-            tools.
+          <p className="max-w-2xl mx-auto text-base leading-relaxed text-neutral-400">
+            A diverse set of technologies I use to build fast, beautiful, and
+            functional digital products — from pixel to production.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* ── Skill Cards ── */}
+        <div className="grid gap-5 mb-16 md:grid-cols-2 lg:grid-cols-3">
           {skillCategories.map((category, index) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative"
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className={`group relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-neutral-700 hover:shadow-2xl ${category.glow}`}
             >
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8 h-full transition-all duration-300 group-hover:border-purple-400/40 group-hover:shadow-2xl group-hover:shadow-purple-500/20">
-                <div
-                  className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${category.color} rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <category.icon className="w-8 h-8 text-white" />
-                </div>
+              {/* Faint gradient bleed in top-left corner */}
+              <div
+                className={`pointer-events-none absolute -top-10 -left-10 w-40 h-40 rounded-full bg-gradient-to-br ${category.accent} opacity-0 group-hover:opacity-10 blur-2xl transition-opacity duration-500`}
+              />
 
-                <h3 className="text-2xl font-semibold text-white mb-4 group-hover:text-purple-300 transition-colors">
-                  {category.title}
-                </h3>
+              {/* Icon */}
+              <div
+                className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${category.accent} mb-5 shadow-lg`}
+              >
+                <category.icon className="w-5 h-5 text-white" />
+              </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-slate-700/50 text-gray-300 text-sm rounded-full border border-slate-600/50 group-hover:border-purple-500/30 transition-colors"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+              {/* Title */}
+              <h3 className="mb-4 text-lg font-bold tracking-tight text-white">
+                {category.title}
+              </h3>
+
+              {/* Skill badges */}
+              <div className="flex flex-wrap gap-1.5">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className={`px-2.5 py-0.5 text-[11px] font-medium rounded-full border transition-colors duration-200 ${category.badge}`}
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Stats Section */}
+        {/* ── Stats Row ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-2 gap-4 md:grid-cols-4"
         >
-          {[
-            {
-              number: "10+",
-              label: "Projects",
-              icon: <CheckCircle className="w-5 h-5 text-purple-400" />,
-            },
-            {
-              number: "2+ Years",
-              label: "Experience in web technologies",
-              icon: <Briefcase className="w-5 h-5 text-pink-400" />,
-            },
-            {
-              number: "10+",
-              label: "Clients",
-              icon: <Users className="w-5 h-5 text-blue-400" />,
-            },
-            {
-              number: "100%",
-              label: "Satisfaction",
-              icon: <Smile className="w-5 h-5 text-green-400" />,
-            },
-          ].map((stat, index) => (
-            <div
+          {stats.map((stat, index) => (
+            <motion.div
               key={index}
-              className="flex flex-col items-center p-4 bg-white/5 rounded-xl shadow-sm hover:bg-white/10 transition"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 + index * 0.07 }}
+              className="relative flex flex-col items-center justify-center p-6 overflow-hidden text-center transition-all duration-300 border group rounded-2xl border-neutral-800 bg-neutral-900 hover:border-orange-500/40 hover:bg-neutral-800/60"
             >
-              <div className="mb-2">{stat.icon}</div>
-              <div className="text-xl md:text-2xl font-bold text-white">
-                {stat.number}
+              {/* Subtle hover glow */}
+              <div className="absolute inset-0 transition-colors duration-300 pointer-events-none rounded-2xl bg-orange-500/0 group-hover:bg-orange-500/5" />
+
+              <div className="flex items-center justify-center w-10 h-10 mb-3 transition-colors duration-200 border rounded-xl bg-orange-500/10 border-orange-500/20 group-hover:border-orange-400/40">
+                <stat.icon className="w-4 h-4 text-orange-400" />
               </div>
-              <div className="text-sm text-gray-200 font-semibold">{stat.label}</div>
-            </div>
+
+              <span
+                className="mb-1 text-3xl font-black leading-none text-white"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                {stat.number}
+              </span>
+              <span className="text-xs font-medium tracking-widest uppercase text-neutral-500">
+                {stat.label}
+              </span>
+            </motion.div>
           ))}
         </motion.div>
       </div>

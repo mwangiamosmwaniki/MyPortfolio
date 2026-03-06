@@ -7,6 +7,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Check for required environment variables
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.TO_EMAIL) {
+  console.error("❌ Missing required environment variables: EMAIL_USER, EMAIL_PASS, or TO_EMAIL");
+  process.exit(1);
+}
+
 // Configure transporter once
 const transporter = nodemailer.createTransport({
   service: "gmail",

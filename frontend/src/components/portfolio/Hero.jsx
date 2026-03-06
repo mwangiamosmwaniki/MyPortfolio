@@ -4,8 +4,8 @@ import { Button } from "../ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import displayImage from "../../assets/images/dp.jpeg";
-import CV from "../../assets/Downloads/Amos_Mwaniki_Mwangi_CV.pdf"
+import displayImage from "../../assets/images/dp.png";
+import CV from "../../assets/Downloads/Amos_Mwaniki_Mwangi_CV.pdf";
 
 const titles = [
   "Full Stack Developer",
@@ -33,7 +33,7 @@ export default function Hero() {
         setDisplayText(
           isDeleting
             ? currentFullTitle.substring(0, displayText.length - 1)
-            : currentFullTitle.substring(0, displayText.length + 1)
+            : currentFullTitle.substring(0, displayText.length + 1),
         );
       }
     }, typeSpeed);
@@ -46,16 +46,16 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Effects */}
+    <section className="relative flex items-center justify-center min-h-screen overflow-hidden bg-white dark:bg-neutral-950">
+      {/* Modern Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute rounded-full top-20 left-10 w-72 h-72 bg-neutral-200 dark:bg-neutral-800/30 blur-3xl" />
+        <div className="absolute rounded-full bottom-20 right-10 w-96 h-96 bg-neutral-200 dark:bg-neutral-800/20 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-neutral-200 dark:from-neutral-800/10 to-neutral-300 dark:to-neutral-800/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -67,26 +67,26 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-purple-300 text-lg mb-4"
+              className="mb-4 text-sm font-semibold tracking-widest uppercase text-neutral-600 dark:text-neutral-400"
             >
-              Hello, I'm
+              Welcome to my portfolio
             </motion.p>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl md:text-7xl font-bold text-white mb-6"
+              className="mb-6 text-5xl font-bold leading-tight md:text-7xl text-neutral-950 dark:text-white"
             >
               Amos Mwangi
             </motion.h1>
 
-            <div className="h-16 mb-8">
+            <div className="h-20 mb-8">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                className="text-2xl font-semibold text-transparent md:text-4xl bg-gradient-to-r from-neutral-700 via-neutral-600 to-neutral-700 dark:from-neutral-300 dark:via-neutral-200 dark:to-neutral-300 bg-clip-text"
               >
                 {displayText}
                 <span className="animate-pulse">|</span>
@@ -97,31 +97,28 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-gray-300 text-lg mb-8 max-w-2xl"
+              className="max-w-2xl mb-8 text-lg leading-relaxed text-gray-400"
             >
               I craft beautiful, functional, and user-centered digital
-              experiences. With experience in modern web technologies, I bring
-              ideas to life.
+              experiences using modern technologies. Let's build something
+              extraordinary together.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4 mb-8"
+              className="flex flex-wrap justify-center gap-4 mb-8 lg:justify-start"
             >
               <Link to={createPageUrl("Projects")}>
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full">
-                  View My Work
+                <Button className="px-8 py-3 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 hover:shadow-xl">
+                  Explore My Work
                 </Button>
               </Link>
-              <a
-                href={CV}
-                download
-              >
+              <a href={CV} download>
                 <Button
                   variant="outline"
-                  className="border-purple-400 text-purple-300 hover:bg-purple-400/10 px-8 py-3 rounded-full"
+                  className="px-8 py-3 font-semibold text-orange-300 transition-all duration-200 border-2 border-orange-400 rounded-lg hover:bg-orange-400/10"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download CV
@@ -133,25 +130,29 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="flex gap-6 justify-center lg:justify-start"
+              className="flex justify-center gap-6 lg:justify-start"
             >
               <a
-                href="#"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                href="https://github.com/mwangiamosmwaniki"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 transition-all duration-200 border rounded-lg bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 group"
               >
-                <Github className="w-6 h-6" />
+                <Github className="w-6 h-6 transition-transform group-hover:scale-110" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                href="https://www.linkedin.com/in/amos-mwangi-108575382"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 transition-all duration-200 border rounded-lg bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 group"
               >
-                <Linkedin className="w-6 h-6" />
+                <Linkedin className="w-6 h-6 transition-transform group-hover:scale-110" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-purple-400 transition-colors"
+                href="mailto:mwangiamos703@gmail.com"
+                className="p-3 transition-all duration-200 border rounded-lg bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 group"
               >
-                <Mail className="w-6 h-6" />
+                <Mail className="w-6 h-6 transition-transform group-hover:scale-110" />
               </a>
             </motion.div>
           </motion.div>
@@ -161,16 +162,17 @@ export default function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
+            className="relative hidden overflow-hidden lg:block"
           >
-            <div className="relative w-full max-w-lg mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-50 animate-pulse" />
+            <div className="relative w-full max-w-md mx-auto">
+              <div className="absolute -inset-2 bg-gradient-to-r from-neutral-300 dark:from-neutral-700 via-neutral-200 dark:via-neutral-800 to-neutral-300 dark:to-neutral-700 rounded-2xl blur-2xl opacity-20" />
+              <div className="absolute overflow-hidden -inset-1 bg-gradient-to-r from-neutral-400 dark:from-neutral-600 to-neutral-300 dark:to-neutral-700 rounded-2xl opacity-10" />
               <img
                 src={displayImage}
-                alt="Developer"
-                className="relative w-full h-[600px] object-cover rounded-3xl shadow-2xl"
+                alt="Developer Portfolio"
+                className="relative w-full h-[550px] object-cover contain  rounded-2xl shadow-2xl ring-2 ring-neutral-300 dark:ring-neutral-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent rounded-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-neutral-950/60 via-transparent to-transparent rounded-2xl" />
             </div>
           </motion.div>
         </div>
@@ -187,7 +189,7 @@ export default function Hero() {
           duration: 1.5,
         }}
         onClick={scrollToNext}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-400 hover:text-purple-400 transition-colors"
+        className="absolute transition-colors transform -translate-x-1/2 bottom-8 left-1/2 text-neutral-400 dark:text-neutral-600 hover:text-neutral-600 dark:hover:text-neutral-300"
       >
         <ArrowDown className="w-8 h-8" />
       </motion.button>

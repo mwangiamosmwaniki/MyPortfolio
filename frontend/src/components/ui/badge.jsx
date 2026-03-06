@@ -5,9 +5,9 @@ export function Badge({ children, variant = "default", className = "" }) {
     "inline-flex items-center px-2 py-1 text-xs font-semibold rounded-md";
 
   const variants = {
-    default: "bg-purple-600 text-white",
+    default: "bg-orange-600 text-white",
     secondary: "bg-gray-700 text-gray-200",
-    outline: "border border-purple-600 text-purple-600",
+    outline: "border border-orange-600 text-orange-600",
   };
 
   return (

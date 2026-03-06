@@ -13,9 +13,9 @@ export function Button({
     "inline-flex items-center justify-center gap-x-2 rounded-md font-medium transition-all duration-200";
 
   const variants = {
-    default: "bg-purple-600 hover:bg-purple-700 text-white shadow-md",
+    default: "bg-orange-600 hover:bg-orange-700 text-white shadow-md",
     ghost: "bg-transparent hover:bg-white/10 text-white",
-    outline: "border border-purple-500/30 text-gray-300 hover:bg-purple-600/20",
+    outline: "border border-orange-500/30 text-gray-300 hover:bg-orange-600/20",
   };
 
   const sizes = {
